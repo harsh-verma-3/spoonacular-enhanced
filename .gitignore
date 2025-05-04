@@ -1,0 +1,3 @@
+//add git ignore file for nodejs node modules
+# Node modules  
+/node_modules
