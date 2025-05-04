@@ -63,6 +63,7 @@ const Header = ({ searchQuery, setSearchQuery, handleSearch, loading }) => {
                                 <label className="input__label input__label--makiko" htmlFor="searchBox">
                                     <span className="input__label-content input__label-content--makiko">
                                         Search spoonacular
+                                        <span className="new-badge">New</span>
                                     </span>
                                 </label>
                                 <button type="submit" className="search-icon-btn">
