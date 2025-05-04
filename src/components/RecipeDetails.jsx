@@ -1,4 +1,5 @@
 import React from "react";
+import { getImagePath } from '../utils/helpers.js';
 
 const RecipeDetails = ({ recipe }) => {
     if (!recipe) return null;
@@ -38,13 +39,13 @@ const RecipeDetails = ({ recipe }) => {
                         <div>
                             <div className="flex justify-center items-center gap-2 mb-2">
                                 <img
-                                    src="/application/frontend/images/cheap.svg"
+                                    src={getImagePath("/application/frontend/images/cheap.svg")}
                                     alt="Cost per serving"
                                     title="Cost per serving"
                                     className="badge w-12 h-12"
                                 />
                                 <img
-                                    src="/application/frontend/images/cheap.svg"
+                                    src={getImagePath("/application/frontend/images/cheap.svg")}
                                     alt="Cost per serving"
                                     title="Cost per serving"
                                     className="badge w-12 h-12"
@@ -56,7 +57,7 @@ const RecipeDetails = ({ recipe }) => {
                         {/* Likes */}
                         <div>
                             <img
-                                src="/application/frontend/images/popular.svg"
+                                src={getImagePath("/application/frontend/images/popular.svg")}
                                 alt="Likes"
                                 title="Likes"
                                 className="badge w-12 h-12 mx-auto mb-2"
@@ -69,7 +70,7 @@ const RecipeDetails = ({ recipe }) => {
                         {/* Time */}
                         <div>
                             <img
-                                src="/application/frontend/images/fast.svg"
+                                src={getImagePath("/application/frontend/images/fast.svg")}
                                 alt="Ready time"
                                 title="Ready time"
                                 className="badge w-12 h-12 mx-auto mb-2"
@@ -80,7 +81,7 @@ const RecipeDetails = ({ recipe }) => {
                         {/* Spoonacular Score */}
                         <div>
                             <img
-                                src="/application/frontend/images/spoonacular-score-75.svg"
+                                src={getImagePath("/application/frontend/images/spoonacular-score-75.svg")}
                                 alt="Spoonacular Score"
                                 title="Spoonacular Score"
                                 className="badge w-16 h-12 mx-auto mb-2"

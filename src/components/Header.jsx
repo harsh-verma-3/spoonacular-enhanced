@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../styles/header.css";
+import { getImagePath } from '../utils/helpers.js';
 
 const Header = ({ searchQuery, setSearchQuery, handleSearch, loading }) => {
     const [isSearchActive, setIsSearchActive] = useState(false);
@@ -40,7 +41,7 @@ const Header = ({ searchQuery, setSearchQuery, handleSearch, loading }) => {
                     <div className="w-16 md:w-auto flex-shrink-0 mb-4 md:mb-0">
                         <a href="/">
                             <img
-                                src="/application/frontend/images/spoonacular-logo.svg"
+                                src={getImagePath("/application/frontend/images/spoonacular-logo.svg")}
                                 title="spoonacular, semantic recipe search engine"
                                 className="h-16"
                                 alt="Spoonacular"
@@ -70,7 +71,7 @@ const Header = ({ searchQuery, setSearchQuery, handleSearch, loading }) => {
                                     {loading ? (
                                         <div className="loader"></div>
                                     ) : (
-                                        <img src="/application/frontend/images/search.png" alt="Search" />
+                                        <img src={getImagePath("/application/frontend/images/search.png")} alt="Search" />
                                     )}
                                 </button>
                             </div>
@@ -82,7 +83,7 @@ const Header = ({ searchQuery, setSearchQuery, handleSearch, loading }) => {
                     <div className="hidden md:flex space-x-4 text-center">
                         <a href="/meal-planner" className="flex flex-col items-center">
                             <img
-                                src="/application/frontend/images/meal-planner-white.svg"
+                                src={getImagePath("/application/frontend/images/meal-planner-white.svg")}
                                 width="40"
                                 height="40"
                                 alt="Meal Planner"
@@ -91,7 +92,7 @@ const Header = ({ searchQuery, setSearchQuery, handleSearch, loading }) => {
                         </a>
                         <a href="/articles" className="flex flex-col items-center">
                             <img
-                                src="/application/frontend/images/reading-white.svg"
+                                src={getImagePath("/application/frontend/images/reading-white.svg")}
                                 width="40"
                                 height="40"
                                 alt="Articles"
@@ -100,7 +101,7 @@ const Header = ({ searchQuery, setSearchQuery, handleSearch, loading }) => {
                         </a>
                         <a href="/login" className="flex flex-col items-center hover:opacity-80 transition-opacity">
                             <img
-                                src="/application/frontend/images/spoonacular-hero.svg"
+                                src={getImagePath("/application/frontend/images/spoonacular-hero.svg")}
                                 width="40"
                                 height="40"
                                 alt="Login"

@@ -1,4 +1,5 @@
 import React from "react";
+import { getImagePath } from '../utils/helpers.js';
 
 const Footer = () => {
     return (
@@ -22,7 +23,7 @@ const Footer = () => {
                         className="block border border-white rounded-lg overflow-hidden"
                     >
                         <img
-                            src="/application/frontend/images/iosAppStore.svg"
+                            src={getImagePath("/application/frontend/images/iosAppStore.svg")}
                             alt="Download on the App Store"
                             className="w-36 h-auto"
                         />
@@ -34,7 +35,7 @@ const Footer = () => {
                         className="block border border-white rounded-lg overflow-hidden"
                     >
                         <img
-                            src="/application/frontend/images/androidPlay.svg"
+                            src={getImagePath("/application/frontend/images/androidPlay.svg")}
                             alt="Get it on Google Play"
                             className="w-36 h-auto"
                         />
@@ -50,7 +51,7 @@ const Footer = () => {
                             rel="noopener noreferrer"
                         >
                             <img
-                                src="/application/frontend/images/facebook.svg"
+                                src={getImagePath("/application/frontend/images/facebook.svg")}
                                 alt="Facebook"
                                 className="w-8 h-8"
                             />
@@ -61,7 +62,7 @@ const Footer = () => {
                             rel="noopener noreferrer"
                         >
                             <img
-                                src="/application/frontend/images/twitter.svg"
+                                src={getImagePath("/application/frontend/images/twitter.svg")}
                                 alt="Twitter"
                                 className="w-8 h-8"
                             />
@@ -72,7 +73,7 @@ const Footer = () => {
                             rel="noopener noreferrer"
                         >
                             <img
-                                src="/application/frontend/images/pinterest.svg"
+                                src={getImagePath("/application/frontend/images/pinterest.svg")}
                                 alt="Pinterest"
                                 className="w-8 h-8"
                             />
