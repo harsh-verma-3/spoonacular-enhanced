@@ -81,7 +81,7 @@ const Header = ({ searchQuery, setSearchQuery, handleSearch, loading }) => {
 
                     {/* Navigation Icons */}
                     <div className="hidden md:flex space-x-4 text-center">
-                        <a href="/meal-planner" className="flex flex-col items-center">
+                        <a href="https://spoonacular.com/meal-planner" className="flex flex-col items-center">
                             <img
                                 src={getImagePath("/application/frontend/images/meal-planner-white.svg")}
                                 width="40"
@@ -90,7 +90,7 @@ const Header = ({ searchQuery, setSearchQuery, handleSearch, loading }) => {
                             />
                             <span className="text-xs mt-1">Meal Planner</span>
                         </a>
-                        <a href="/articles" className="flex flex-col items-center">
+                        <a href="https://spoonacular.com/articles" className="flex flex-col items-center">
                             <img
                                 src={getImagePath("/application/frontend/images/reading-white.svg")}
                                 width="40"
@@ -99,7 +99,7 @@ const Header = ({ searchQuery, setSearchQuery, handleSearch, loading }) => {
                             />
                             <span className="text-xs mt-1">Articles</span>
                         </a>
-                        <a href="/login" className="flex flex-col items-center hover:opacity-80 transition-opacity">
+                        <a href="https://spoonacular.com/login" className="flex flex-col items-center hover:opacity-80 transition-opacity">
                             <img
                                 src={getImagePath("/application/frontend/images/spoonacular-hero.svg")}
                                 width="40"

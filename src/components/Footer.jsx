@@ -7,11 +7,11 @@ const Footer = () => {
             <div className="max-w-5xl mx-auto grid grid-cols-12 gap-4">
                 {/* Column 1: About Section */}
                 <div className="col-span-2">
-                    <a href="/about" className="block hover:underline">About</a>
-                    <a href="/press" className="block hover:underline">Press</a>
-                    <a href="/terms" className="block hover:underline">Terms & Privacy</a>
-                    <a href="/dmca" className="block hover:underline">DMCA</a>
-                    <a href="/contact" className="block hover:underline">Contact & Imprint</a>
+                    <a href="https://spoonacular.com/about" className="block hover:underline">About</a>
+                    <a href="https://spoonacular.com/press" className="block hover:underline">Press</a>
+                    <a href="https://spoonacular.com/terms" className="block hover:underline">Terms & Privacy</a>
+                    <a href="https://spoonacular.com/dmca" className="block hover:underline">DMCA</a>
+                    <a href="https://spoonacular.com/contact" className="block hover:underline">Contact & Imprint</a>
                 </div>
 
                 {/* Column 2: App Store Links */}
