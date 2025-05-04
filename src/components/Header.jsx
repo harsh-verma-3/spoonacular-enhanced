@@ -97,12 +97,13 @@ const Header = ({ searchQuery, setSearchQuery, handleSearch, loading }) => {
                             />
                             <span className="text-xs mt-1">Articles</span>
                         </a>
-                        <a href="/articles" className="flex flex-col items-center">
+                        <a href="/login" className="flex flex-col items-center hover:opacity-80 transition-opacity">
                             <img
                                 src="/application/frontend/images/spoonacular-hero.svg"
                                 width="40"
                                 height="40"
                                 alt="Login"
+                                className="w-10 h-10"
                             />
                             <span className="text-xs mt-1">Login</span>
                         </a>
