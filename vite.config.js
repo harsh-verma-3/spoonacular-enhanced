@@ -7,4 +7,24 @@ export default defineConfig({
     server: {
         port: 3000,
     },
+    build: {
+        commonjsOptions: {
+            transformMixedEsModules: true,
+        },
+        rollupOptions: {
+            external: [],
+            output: {
+                format: 'es',
+                inlineDynamicImports: true
+            }
+        }
+    },
+    optimizeDeps: {
+        include: [
+            'canvasjs',
+            '@canvasjs/react-charts',
+            'chart.js',
+            'react-chartjs-2'
+        ]
+    }
 });
