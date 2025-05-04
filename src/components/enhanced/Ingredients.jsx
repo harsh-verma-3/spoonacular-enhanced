@@ -5,6 +5,53 @@ const Ingredients = ({ ingredients, servings, handleServingsChange }) => {
   const [originalServings, setOriginalServings] = useState(null);
   // Add state for metric vs US units
   const [showMetric, setShowMetric] = useState(true);
+
+    // Add a function to handle exporting shopping list
+    const exportShoppingList = () => {
+      if (!ingredients || ingredients.length === 0) {
+        alert("No ingredients to export");
+        return;
+      }
+      
+      // Create content for the shopping list
+      let content = "MY SHOPPING LIST\n\n";
+      content += `Recipe for ${servings} serving(s)\n`;
+      content += "-------------------------------\n\n";
+      
+      ingredients.forEach((ingredient) => {
+        // Use the same adjustment and conversion logic from the rendering
+        const amount = typeof ingredient.amount === 'number' ? 
+          ingredient.amount : parseFloat(ingredient.amount) || 0;
+        
+        const adjustedAmount = adjustAmount(amount);
+        const { amount: displayAmount, unit: displayUnit } = convertUnit(adjustedAmount, ingredient.unit);
+        
+        content += `• ${displayAmount}${displayUnit ? ` ${displayUnit}` : ''} ${ingredient.name}\n`;
+      });
+      
+      content += "\n-------------------------------\n";
+      content += "Generated with Spoonacular Clone";
+      
+      // Create a Blob object from the content
+      const blob = new Blob([content], { type: 'text/plain' });
+      
+      // Create a URL for the Blob
+      const url = URL.createObjectURL(blob);
+      
+      // Create a temporary anchor element to trigger the download
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'shopping-list.txt';
+      document.body.appendChild(a);
+      a.click();
+      
+      // Clean up
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 100);
+    };
+  
   
   // Set original servings when component mounts or ingredients change
   useEffect(() => {
@@ -174,6 +221,7 @@ const Ingredients = ({ ingredients, servings, handleServingsChange }) => {
       <div className="shopping-list-action mt-6">
         <button 
           className="add-to-shopping-list px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+          onClick={exportShoppingList}
         >
           <i className="fas fa-shopping-cart mr-2"></i> Add to Shopping List
         </button>
