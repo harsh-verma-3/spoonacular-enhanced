@@ -3,7 +3,6 @@ import react from "@vitejs/plugin-react";
 import commonjs from "vite-plugin-commonjs";
 
 export default defineConfig({
-    base: "/spoonacular-enhanced",
     plugins: [react(), commonjs()],
     server: {
         port: 3000,
