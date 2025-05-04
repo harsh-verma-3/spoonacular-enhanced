@@ -13,7 +13,7 @@ import Instructions from './Instructions';
 import NutritionInfo from './NutritionInfo';
 import RelatedRecipes from './RelatedRecipies';
 
-const RecipePage = ({ recipe }) => {
+const RecipePage = ({ recipe, onRecipeSelect }) => {
   const [servings, setServings] = useState(recipe?.servings || 4);
   const [showMetric, setShowMetric] = useState(true);
   const [allergies, setAllergies] = useState([]);
@@ -215,6 +215,15 @@ const RecipePage = ({ recipe }) => {
               />
             )}
           </div>
+        </div>
+           {/* Related Recipes */}
+           <div className="related-recipes-container bg-white rounded-xl shadow-lg p-6">
+          <h2 className="text-2xl font-bold mb-6 text-gray-800">Related Recipes</h2>
+          <RelatedRecipes 
+            recipeId={recipe.id}
+            cuisine={recipe.cuisines?.[0] || ''} 
+            onRecipeSelect={onRecipeSelect}
+          />
         </div>
       </div>
     </div>

@@ -110,11 +110,12 @@ const App = () => {
                 )}
                 
                 {/* No Results Message */}
-                {hasSearched && !loading && searchResults.length === 0 && !error && (
-                    <div className="bg-gray-100 border-l-4 border-gray-500 text-gray-700 p-4 mb-6">
-                        <p>Sorry, we have not found any matches for your query.</p>
-                    </div>
-                )}
+             
+{hasSearched && !loading && searchResults.length === 0 && !error && !selectedRecipe && (
+  <div className="bg-gray-100 border-l-4 border-gray-500 text-gray-700 p-4 mb-6">
+    <p>Sorry, we have not found any matches for your query.</p>
+  </div>
+)}
                 
                 {/* Search Results */}
                 {searchResults.length > 0 && !selectedRecipe && (
@@ -149,22 +150,28 @@ const App = () => {
                     </div>
                 )}
 
-                {/* Recipe Display */}
-                {selectedRecipe && !loading && (
-                    viewMode === "original" ? (
-                        <>
-                            <RecipeDetails recipe={selectedRecipe} />
-                            <Ingredients ingredients={selectedRecipe.extendedIngredients} />
-                            <Instructions instructions={selectedRecipe.analyzedInstructions} />
-                            <PriceBreakdown price={selectedRecipe.pricePerServing} />
-                            <DetailedNutrition nutrition={selectedRecipe.nutrition} />
-                            <Equipment equipment={selectedRecipe.analyzedInstructions?.[0]?.steps?.flatMap(step => step.equipment) || []} />
-                            <RelatedRecipes related={null} />
-                        </>
-                    ) : (
-                        <RecipePage recipe={selectedRecipe} />
-                    )
-                )}
+{selectedRecipe && !loading && (
+    viewMode === "original" ? (
+        <>
+            <RecipeDetails recipe={selectedRecipe} />
+            <Ingredients ingredients={selectedRecipe.extendedIngredients} />
+            <Equipment 
+                equipment={selectedRecipe.analyzedInstructions?.[0]?.steps?.flatMap(step => step.equipment) || []} 
+            />
+            <Instructions instructions={selectedRecipe.analyzedInstructions} />
+            <PriceBreakdown 
+                ingredients={selectedRecipe.extendedIngredients} 
+                price={selectedRecipe.pricePerServing} 
+            />
+            <DetailedNutrition nutrition={selectedRecipe.nutrition} />
+           
+            <RelatedRecipes onRecipeSelect={handleRecipeSelect} />
+        </>
+    ) : (
+        
+<RecipePage recipe={selectedRecipe} onRecipeSelect={handleRecipeSelect} />
+    )
+)}
             </main>
             <Footer />
         </div>

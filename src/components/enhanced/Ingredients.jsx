@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 const Ingredients = ({ ingredients, servings, handleServingsChange }) => {
   // Store the original recipe servings for proper calculation
   const [originalServings, setOriginalServings] = useState(null);
+  // Add state for metric vs US units
+  const [showMetric, setShowMetric] = useState(true);
   
   // Set original servings when component mounts or ingredients change
   useEffect(() => {
@@ -27,54 +29,139 @@ const Ingredients = ({ ingredients, servings, handleServingsChange }) => {
     return adjusted.toFixed(2).replace(/\.00$/, '').replace(/\.0$/, '');
   };
 
+  // Function to convert units between metric and US
+  const convertUnit = (amount, unit) => {
+    if (!unit) return { amount, unit: '' };
+    
+    // Lower case for consistent matching
+    const lowerUnit = unit.toLowerCase();
+    
+    // Convert to metric (if showing metric and unit is US)
+    if (showMetric) {
+      // Convert US units to metric
+      if (lowerUnit === 'oz' || lowerUnit === 'ounce' || lowerUnit === 'ounces') {
+        return { amount: (amount * 28.35).toFixed(1), unit: 'g' };
+      }
+      if (lowerUnit === 'lb' || lowerUnit === 'pound' || lowerUnit === 'pounds') {
+        return { amount: (amount * 453.59).toFixed(1), unit: 'g' };
+      }
+      if (lowerUnit === 'cup' || lowerUnit === 'cups') {
+        return { amount: (amount * 236.59).toFixed(1), unit: 'ml' };
+      }
+      if (lowerUnit === 'gallon' || lowerUnit === 'gallons') {
+        return { amount: (amount * 3.785).toFixed(2), unit: 'L' };
+      }
+      if (lowerUnit === 'quart' || lowerUnit === 'quarts') {
+        return { amount: (amount * 946.35).toFixed(1), unit: 'ml' };
+      }
+      if (lowerUnit === 'pint' || lowerUnit === 'pints') {
+        return { amount: (amount * 473.18).toFixed(1), unit: 'ml' };
+      }
+      if (lowerUnit === 'fl oz' || lowerUnit === 'fluid ounce' || lowerUnit === 'fluid ounces') {
+        return { amount: (amount * 29.57).toFixed(1), unit: 'ml' };
+      }
+      // For fahrenheit, convert to celsius
+      if (lowerUnit === '°f' || lowerUnit === 'fahrenheit') {
+        return { amount: Math.round((amount - 32) * 5/9), unit: '°C' };
+      }
+    } else {
+      // Convert metric to US units
+      if (lowerUnit === 'g' || lowerUnit === 'gram' || lowerUnit === 'grams') {
+        // For small amounts, keep in grams
+        if (amount < 100) {
+          return { amount, unit };
+        }
+        return { amount: (amount / 28.35).toFixed(1), unit: 'oz' };
+      }
+      if (lowerUnit === 'kg' || lowerUnit === 'kilogram' || lowerUnit === 'kilograms') {
+        return { amount: (amount * 2.205).toFixed(1), unit: 'lb' };
+      }
+      if (lowerUnit === 'ml' || lowerUnit === 'milliliter' || lowerUnit === 'milliliters') {
+        // For small amounts, keep in ml
+        if (amount < 100) {
+          return { amount, unit };
+        }
+        return { amount: (amount / 236.59).toFixed(1), unit: 'cup' };
+      }
+      if (lowerUnit === 'l' || lowerUnit === 'liter' || lowerUnit === 'liters') {
+        return { amount: (amount * 4.227).toFixed(1), unit: 'cups' };
+      }
+      // For celsius, convert to fahrenheit
+      if (lowerUnit === '°c' || lowerUnit === 'celsius') {
+        return { amount: Math.round(amount * 9/5 + 32), unit: '°F' };
+      }
+    }
+    
+    // If no conversion needed, return original values
+    return { amount, unit };
+  };
+
   console.log("Servings:", servings, "Original:", originalServings);
   
   return (
     <div className="ingredients-section">
-      <div className="ingredients-controls">
-        <div className="servings-control">
-          <span>Servings:</span>
+      <div className="ingredients-controls flex justify-between items-center mb-4">
+        <div className="servings-control flex items-center">
+          <span className="mr-2">Servings:</span>
           <input 
             type="number" 
             min="1" 
             value={servings}
             onChange={handleServingsChange}
-            className="servings-input"
+            className="w-16 px-2 py-1 border rounded"
           />
+        </div>
+        
+        {/* Add the metric/US toggle */}
+        <div className="units-toggle">
+          <button 
+            onClick={() => setShowMetric(!showMetric)}
+            className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-sm"
+          >
+            {showMetric ? 'Show US Units' : 'Show Metric Units'}
+          </button>
         </div>
       </div>
 
-      <div className="ingredients-list">
+      <div className="ingredients-list mt-4">
         {ingredients.length === 0 ? (
-          <p className="no-ingredients">No ingredients available for this recipe.</p>
+          <p className="no-ingredients text-gray-500">No ingredients available for this recipe.</p>
         ) : (
-          <ul>
+          <ul className="space-y-3">
             {ingredients.map((ingredient, index) => {
               // Ensure amount is properly parsed as a number
               const amount = typeof ingredient.amount === 'number' ? 
                 ingredient.amount : 
                 parseFloat(ingredient.amount) || 0;
               
-              const adjustedValue = adjustAmount(amount);
+              // Adjust amount based on servings
+              const adjustedAmount = adjustAmount(amount);
+              
+              // Convert units if needed
+              const { amount: displayAmount, unit: displayUnit } = convertUnit(adjustedAmount, ingredient.unit);
               
               return (
-                <li key={index} className="ingredient-item">
+                <li key={index} className="ingredient-item flex items-center space-x-3">
                   {ingredient.image && (
                     <img 
                       src={`https://spoonacular.com/cdn/ingredients_100x100/${ingredient.image}`} 
                       alt={ingredient.name} 
-                      className="ingredient-image"
+                      className="w-12 h-12 object-cover rounded-full"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://via.placeholder.com/100?text=No+Image";
+                      }}
                     />
                   )}
                   
                   <div className="ingredient-details">
-                    <span className="ingredient-amount">
-                      {adjustedValue}
-                      {ingredient.unit && ` ${ingredient.unit}`}
+                    <span className="ingredient-amount font-medium">
+                      {displayAmount}
+                      {displayUnit && ` ${displayUnit}`}
                     </span>
-                    <span className="ingredient-name">{ingredient.name}</span>
+                    <span className="ingredient-name ml-2">{ingredient.name}</span>
                     {ingredient.originalName && ingredient.originalName !== ingredient.name && (
-                      <span className="ingredient-original-name">({ingredient.originalName})</span>
+                      <span className="ingredient-original-name text-gray-500 text-sm ml-1">({ingredient.originalName})</span>
                     )}
                   </div>
                 </li>
@@ -84,11 +171,11 @@ const Ingredients = ({ ingredients, servings, handleServingsChange }) => {
         )}
       </div>
       
-      <div className="shopping-list-action">
+      <div className="shopping-list-action mt-6">
         <button 
-          className="add-to-shopping-list"
+          className="add-to-shopping-list px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
         >
-          <i className="fas fa-shopping-cart"></i> Add to Shopping List
+          <i className="fas fa-shopping-cart mr-2"></i> Add to Shopping List
         </button>
       </div>
     </div>

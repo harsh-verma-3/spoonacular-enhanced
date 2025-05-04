@@ -97,6 +97,15 @@ const Header = ({ searchQuery, setSearchQuery, handleSearch, loading }) => {
                             />
                             <span className="text-xs mt-1">Articles</span>
                         </a>
+                        <a href="/articles" className="flex flex-col items-center">
+                            <img
+                                src="/application/frontend/images/spoonacular-hero.svg"
+                                width="40"
+                                height="40"
+                                alt="Login"
+                            />
+                            <span className="text-xs mt-1">Login</span>
+                        </a>
                     </div>
                 </div>
             </div>

@@ -1,17 +1,9 @@
 import React, { useState } from "react";
 
-const Ingredients = () => {
+const Ingredients = ({ ingredients = [] }) => {
     const [view, setView] = useState("grid");
     const [measure, setMeasure] = useState("us");
     const [servings, setServings] = useState(6);
-
-    const ingredients = [
-        { name: "3 pounds trimmed fresh Brussels sprouts", metric: "1.36 kgs", us: "3 pounds", image: "brussels-sprouts.jpg" },
-        { name: "2 tablespoons canola oil", metric: "2 Tbsps", us: "2 Tbsps", image: "oil-coconut.jpg" },
-        { name: "1/4 cup maple syrup", metric: "80.5 ml", us: "0.25 cup", image: "maple-syrup.png" },
-        { name: "1/4 cup light brown sugar", metric: "55 g", us: "0.25 cup", image: "light-brown-sugar.jpg" },
-        { name: "8 ounces gf df pancetta", metric: "226.8 g", us: "8 ounces", image: "pancetta.png" },
-    ];
 
     const handleServingsIncrement = () => {
         setServings(prevServings => prevServings + 1);
@@ -24,7 +16,7 @@ const Ingredients = () => {
     };
 
     return (
-        <section className="bg-white rounded-lg shadow p-6 mb-6 mt-8">
+        <section className="rounded-lg p-6 mb-6 mt-8">
             <h2 className="text-2xl font-bold mb-6">Ingredients</h2>
             
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
@@ -120,9 +112,17 @@ const Ingredients = () => {
                             src={`https://spoonacular.com/cdn/ingredients_100x100/${ingredient.image}`}
                             alt={ingredient.name}
                             className="w-16 h-16 rounded"
+                            onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = "https://via.placeholder.com/100?text=No+Image";
+                            }}
                         />
                         <div>
-                            <p className="font-bold">{ingredient[measure]}</p>
+                            <p className="font-bold">
+                                {measure === "metric" 
+                                  ? `${ingredient.measures?.metric?.amount || ''} ${ingredient.measures?.metric?.unitShort || ''}`
+                                  : `${ingredient.measures?.us?.amount || ''} ${ingredient.measures?.us?.unitShort || ''}`}
+                            </p>
                             <p>{ingredient.name}</p>
                         </div>
                     </div>

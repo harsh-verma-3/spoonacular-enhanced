@@ -1,51 +1,59 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import CanvasJSReact from '@canvasjs/react-charts';
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-const DetailedNutrition = () => {
+const DetailedNutrition = ({ nutrition = {} }) => {
     const [tooltipData, setTooltipData] = useState(null);
     const chartRef = useRef(null);
+    
+    // Extract nutrition data
+    const nutrients = nutrition.nutrients || [];
+    
+    // Find core nutrition values
+    const calories = nutrients.find(n => n.name === "Calories")?.amount || 0;
+    const protein = nutrients.find(n => n.name === "Protein")?.amount || 0;
+    const fat = nutrients.find(n => n.name === "Fat")?.amount || 0;
+    const carbs = nutrients.find(n => n.name === "Carbohydrates")?.amount || 0;
+    const healthScore = nutrition.healthScore || 0;
 
-    // "Limit These" data
-    const limits = [
-        { name: "Calories", value: "528k", percent: 26 },
-        { name: "Fat", value: "34g", percent: 53 },
-        { name: "Saturated Fat", value: "10g", percent: 69 },
-        { name: "Carbohydrates", value: "48g", percent: 16 },
-        { name: "Sugar", value: "31g", percent: 35 },
-        { name: "Cholesterol", value: "24mg", percent: 8 },
-        { name: "Sodium", value: "507mg", percent: 22 },
-    ];
+    // "Limit These" data - filter from nutrients
+    const limitNutrients = ["Calories", "Fat", "Saturated Fat", "Carbohydrates", "Sugar", "Cholesterol", "Sodium"];
+    const limits = limitNutrients.map(name => {
+        const nutrient = nutrients.find(n => n.name === name);
+        return {
+            name,
+            value: nutrient ? `${Math.round(nutrient.amount)}${nutrient.unit}` : "0",
+            percent: nutrient ? Math.round(nutrient.percentOfDailyNeeds) : 0
+        };
+    });
 
-    // "Get Enough Of These" data
-    const getEnough = [
-        { name: "Protein", value: "12g", percent: 25 },
-        { name: "Vitamin K", value: "409µg", percent: 390 },
-        { name: "Vitamin C", value: "193mg", percent: 234 },
-        { name: "Manganese", value: "1mg", percent: 56 },
-        { name: "Fiber", value: "8g", percent: 35 },
-        // ...rest of the data
-    ];
+    // "Get Enough Of These" data - filter from nutrients
+    const enoughNutrients = ["Protein", "Vitamin K", "Vitamin C", "Manganese", "Fiber", "Vitamin B6", "Potassium"];
+    const getEnough = enoughNutrients.map(name => {
+        const nutrient = nutrients.find(n => n.name === name);
+        return {
+            name,
+            value: nutrient ? `${Math.round(nutrient.amount)}${nutrient.unit}` : "0",
+            percent: nutrient ? Math.round(nutrient.percentOfDailyNeeds) : 0
+        };
+    });
 
-    // Get chart options for tooltip
+    // Get chart options for tooltip - simplified example distribution
     const getChartOptions = (name) => {
+        // Create a simple distribution if we don't have actual data
         const ingredientDistribution = {
             Calories: [
-                { label: "Brussels Sprouts", y: 40 },
-                { label: "Pancetta", y: 30 },
-                { label: "Maple Syrup", y: 20 },
-                { label: "Brown Sugar", y: 10 },
+                { label: "Main Ingredient", y: 40 },
+                { label: "Secondary Ingredient", y: 30 },
+                { label: "Other Ingredients", y: 30 },
             ],
             Fat: [
-                { label: "Pancetta", y: 50 },
-                { label: "Canola Oil", y: 20 },
-                { label: "Pecans", y: 15 },
-                { label: "Olive Oil", y: 15 },
+                { label: "Main Fat Source", y: 50 },
+                { label: "Other Sources", y: 50 },
             ],
             Protein: [
-                { label: "Brussels Sprouts", y: 60 },
-                { label: "Pancetta", y: 30 },
-                { label: "Pecans", y: 10 },
+                { label: "Main Protein Source", y: 60 },
+                { label: "Other Sources", y: 40 },
             ],
         };
 
@@ -77,18 +85,18 @@ const DetailedNutrition = () => {
     };
 
     return (
-        <section className="bg-white rounded-lg shadow p-6 mb-6">
+        <section className="rounded-lg p-6 mb-6">
             <h3 className="text-2xl font-bold mb-4">Nutritional Information</h3>
             
             {/* Quickview Section */}
             <div className="mb-6 p-4 bg-gray-100 rounded">
                 <div className="font-bold mb-2">Quickview</div>
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
-                    <div>528 Calories</div>
-                    <div>12g Protein</div>
-                    <div>34g Total Fat</div>
-                    <div>48g Carbs</div>
-                    <div>23% Health Score</div>
+                    <div>{Math.round(calories)} Calories</div>
+                    <div>{Math.round(protein)}g Protein</div>
+                    <div>{Math.round(fat)}g Total Fat</div>
+                    <div>{Math.round(carbs)}g Carbs</div>
+                    <div>{healthScore || 0}% Health Score</div>
                 </div>
             </div>
 
@@ -114,7 +122,7 @@ const DetailedNutrition = () => {
                                 >
                                     <div
                                         className="h-4 bg-[#e57373]" 
-                                        style={{ width: `${item.percent}%` }}
+                                        style={{ width: `${Math.min(item.percent, 100)}%` }}
                                     ></div>
                                     <span className="absolute right-0 top-0 text-xs text-[#e57373]">{item.percent}%</span>
                                 </div>
